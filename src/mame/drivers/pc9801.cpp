@@ -2360,6 +2360,19 @@ void pc9801vm_state::pc9801ux(machine_config &config)
 //  AM9157A(config, "i8237", 10000000); // unknown clock
 }
 
+void pc9801vm_state::pc9801dx(machine_config &config)
+{
+	pc9801rs(config);
+	i80286_cpu_device &maincpu(I80286(config.replace(), m_maincpu, 12000000));
+	maincpu.set_addrmap(AS_PROGRAM, &pc9801vm_state::pc9801ux_map);
+	maincpu.set_addrmap(AS_IO, &pc9801vm_state::pc9801ux_io);
+	maincpu.set_a20_callback(i80286_cpu_device::a20_cb(&pc9801vm_state::a20_286, this));
+	maincpu.set_irq_acknowledge_callback("pic8259_master", FUNC(pic8259_device::inta_cb));
+
+	config_floppy_525hd(config);
+//  AM9157A(config, "i8237", 10000000); // unknown clock
+}
+
 void pc9801vm_state::pc9801vx(machine_config &config)
 {
 	pc9801ux(config);
@@ -2598,6 +2611,28 @@ ROM_START( pc9801ux )
 	ROM_REGION16_LE( 0x30000, "ipl", ROMREGION_ERASEFF )
 	ROM_LOAD( "itf_ux.rom",  0x10000, 0x08000, CRC(c7942563) SHA1(61bb210d64c7264be939b11df1e9cd14ffeee3c9) )
 	ROM_LOAD( "bios_ux.rom", 0x18000, 0x18000, BAD_DUMP CRC(97375ca2) SHA1(bfe458f671d90692104d0640730972ca8dc0a100) )
+
+	ROM_REGION( 0x80000, "chargen", 0 )
+	ROM_LOAD( "font_ux.rom",     0x000000, 0x046800, BAD_DUMP CRC(19a76eeb) SHA1(96a006e8515157a624599c2b53a581ae0dd560fd) )
+
+	LOAD_KANJI_ROMS
+//  LOAD_IDE_ROM
+ROM_END
+
+/*
+DX - 80286 12 + V30 8
+*/
+
+ROM_START( pc9801dx )
+	ROM_REGION16_LE( 0x40000, "biosrom", ROMREGION_ERASEFF )
+	ROM_LOAD16_BYTE( "hdk01_02.bin",  0x000000, 0x020000, CRC(bf8b25fd) SHA1(e86eb6b46d73aad1cc96945bd34bd728d882583e) )
+	ROM_LOAD16_BYTE( "hdk02_02.bin",  0x000001, 0x020000, CRC(37f21929) SHA1(1bb7c2f09eed399a78c3668f4193429a1980acc9) )
+
+	ROM_REGION16_LE( 0x30000, "ipl", ROMREGION_ERASEFF )
+	ROM_COPY( "biosrom", 0x20000, 0x10000, 0x08000 )  //ITF ROM
+	ROM_COPY( "biosrom", 0x28000, 0x18000, 0x08000 )  //BIOS ROM
+	ROM_COPY( "biosrom", 0x30000, 0x20000, 0x08000 )
+	ROM_COPY( "biosrom", 0x38000, 0x28000, 0x08000 )
 
 	ROM_REGION( 0x80000, "chargen", 0 )
 	ROM_LOAD( "font_ux.rom",     0x000000, 0x046800, BAD_DUMP CRC(19a76eeb) SHA1(96a006e8515157a624599c2b53a581ae0dd560fd) )
@@ -2900,6 +2935,8 @@ COMP( 1986, pc9801vx,   0,        0, pc9801vx,  pc9801rs, pc9801vm_state, init_p
 // RS class (i386SX)
 COMP( 1988, pc9801rx,   pc9801rs, 0, pc9801rs,  pc9801rs, pc9801vm_state, init_pc9801_kanji,   "NEC",   "PC-9801RX",                     MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
 COMP( 1989, pc9801rs,   0,        0, pc9801rs,  pc9801rs, pc9801vm_state, init_pc9801_kanji,   "NEC",   "PC-9801RS",                     MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
+// DX class (i286)
+COMP( 1990, pc9801dx,   0,        0, pc9801dx,  pc9801rs, pc9801vm_state, init_pc9801_kanji,   "NEC",   "PC-9801DX",                     MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
 // DA class (i386SX + SDIP and EMS)
 // ...
 // UF/UR/US class (i386SX + SDIP, optional high-reso according to BIOS? Derivatives of UX)

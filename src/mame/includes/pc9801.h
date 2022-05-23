@@ -376,6 +376,7 @@ public:
 	void pc9801vm(machine_config &config);
 
 	void pc9801ux(machine_config &config);
+	void pc9801dx(machine_config &config);
 	void pc9801vx(machine_config &config);
 	void pc9801rs(machine_config &config);
 
@@ -470,7 +471,7 @@ protected:
 	}m_analog16;
 
 private:
-	// EGC, PC9801VX onward
+	// EGC, PC-9801VX onward
 	struct {
 		uint16_t regs[8]{};
 		uint16_t pat[4]{};
