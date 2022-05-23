@@ -2433,8 +2433,43 @@ void pc9801bx_state::pc9801bx2(machine_config &config)
 	ROM_REGION( 0x80000, "new_chargen", ROMREGION_ERASEFF )
 
 /*
-F - 8086 8
+"vanilla" - 8086 5
 */
+
+ROM_START( pc9801 )
+	ROM_REGION16_LE( 0x18000, "ipl", ROMREGION_ERASEFF )
+	ROM_LOAD16_BYTE( "ruq2g 06.bin", 0x14000, 0x2000, CRC(ee7b336b) SHA1(0691ebfcb9a8ce56ca303c552f634e953bb2ea7c) )
+	ROM_LOAD16_BYTE( "ruq4f 06.bin", 0x14001, 0x2000, CRC(1e5c38c4) SHA1(5a8681ae0b1c3248d81a5b6707595d85cabe6bc8) )
+	ROM_LOAD16_BYTE( "ruq2f 06.bin", 0x10000, 0x2000, CRC(be95afa5) SHA1(137fc4dd10ecc9f058b819df89a67df819a6509c) )
+	ROM_LOAD16_BYTE( "ruq4e 06.bin", 0x10001, 0x2000, CRC(bc425f21) SHA1(f688ef89ebe3993dcbf70608d996067e92176be1) )
+	ROM_LOAD16_BYTE( "ruq2e 06.bin", 0x0c000, 0x2000, CRC(16a3eaca) SHA1(345c1764e1b8aa5f3baa876658cf4cd224351fae) )
+	ROM_LOAD16_BYTE( "ruq4d 06.bin", 0x0c001, 0x2000, CRC(0ca07388) SHA1(bdd564d19fcfa3dff8a695e2386c94defadcb164) )
+	ROM_LOAD16_BYTE( "ruq2d 06.bin", 0x08000, 0x2000, CRC(907d0263) SHA1(30ba910424c99ae4c54eb2be5472258a3d5e4f29) )
+	ROM_LOAD16_BYTE( "ruq4b 06.bin", 0x08001, 0x2000, CRC(b41d15e7) SHA1(321ec22e50fd2ee69f73c1e3f11c9fd07afa46fc) )
+	ROM_LOAD16_BYTE( "ruq1f 06.bin", 0x00000, 0x2000, CRC(12d6ea62) SHA1(3a612428aaf3120ec00c10d709674535668f1d65) )
+	ROM_LOAD16_BYTE( "ruq4h 06.bin", 0x00001, 0x2000, CRC(348992b9) SHA1(f5735f57305fd6585b2db1c81d34bb7ba2ed7510) )
+	ROM_LOAD16_BYTE( "ruq1g 06.bin", 0x04000, 0x2000, CRC(d4ea8a62) SHA1(c899ea64ce8652a5b6976d62466efe2864cfb049) )
+	ROM_LOAD16_BYTE( "ruq4g 06.bin", 0x04001, 0x2000, CRC(c1470ae5) SHA1(4eb31b2ad0b8f0dfad99bb67ada9e5853d5af4a1) )
+
+	ROM_REGION16_LE( 0x1000, "fdc_bios_2dd", ROMREGION_ERASEFF )
+
+	ROM_REGION16_LE( 0x1000, "fdc_bios_2hd", ROMREGION_ERASEFF )
+
+	ROM_REGION( 0x20000, "fdc_data", ROMREGION_ERASEFF )
+
+	ROM_REGION( 0x800, "kbd_mcu", ROMREGION_ERASEFF)
+	ROM_LOAD( "mcu.bin", 0x0000, 0x0800, NO_DUMP ) //connected through a i8251 UART, needs decapping
+
+	ROM_REGION( 0x80000, "chargen", 0 )
+	// original dump, needs heavy bitswap mods
+	ROM_LOAD( "sfz4w 00.bin",   0x00000, 0x02000, CRC(11197271) SHA1(8dbd2f25daeed545ea2c74d849f0a209ceaf4dd7) )
+	// taken from i386 model
+	ROM_LOAD( "d23128c-17.bin", 0x00000, 0x00800, BAD_DUMP CRC(eea57180) SHA1(4aa037c684b72ad4521212928137d3369174eb1e) )
+	// bad dump, 8x16 charset? (it's on the kanji board)
+	ROM_LOAD("hn613128pac8.bin",0x00800, 0x01000, BAD_DUMP CRC(b5a15b5c) SHA1(e5f071edb72a5e9a8b8b1c23cf94a74d24cb648e) )
+
+	LOAD_KANJI_ROMS
+ROM_END
 
 ROM_START( pc9801f )
 	ROM_REGION16_LE( 0x18000, "ipl", ROMREGION_ERASEFF )
@@ -2459,8 +2494,10 @@ ROM_START( pc9801f )
 
 	/* note: ROM names of following two might be swapped */
 	ROM_REGION( 0x80000, "chargen", 0 )
-	ROM_LOAD( "d23128c-17.bin", 0x00000, 0x00800, BAD_DUMP CRC(eea57180) SHA1(4aa037c684b72ad4521212928137d3369174eb1e) ) //original is a bad dump, this is taken from i386 model
-	ROM_LOAD("hn613128pac8.bin",0x00800, 0x01000, BAD_DUMP CRC(b5a15b5c) SHA1(e5f071edb72a5e9a8b8b1c23cf94a74d24cb648e) ) //bad dump, 8x16 charset? (it's on the kanji board)
+	//original is a bad dump, this is taken from i386 model
+	ROM_LOAD( "d23128c-17.bin", 0x00000, 0x00800, BAD_DUMP CRC(eea57180) SHA1(4aa037c684b72ad4521212928137d3369174eb1e) )
+	//bad dump, 8x16 charset? (it's on the kanji board)
+	ROM_LOAD("hn613128pac8.bin",0x00800, 0x01000, BAD_DUMP CRC(b5a15b5c) SHA1(e5f071edb72a5e9a8b8b1c23cf94a74d24cb648e) )
 
 	LOAD_KANJI_ROMS
 ROM_END
@@ -2815,7 +2852,8 @@ void pc9801vm_state::init_pc9801vm_kanji()
 // specifically happening for PC9801RS. This will be hopefully put into stone with driver splits at some point in future.
 
 // "vanilla" class (i86, E/F/M)
-COMP( 1983, pc9801f,    0,        0, pc9801,    pc9801,   pc9801_state, init_pc9801_kanji,   "NEC",   "PC-9801F",                      MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND ) // genuine dump
+COMP( 1982, pc9801,     0,        0, pc9801,    pc9801,   pc9801_state, init_pc9801_kanji,   "NEC",   "PC-9801",   MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND ) // genuine dump
+COMP( 1983, pc9801f,    pc9801,   0, pc9801,    pc9801,   pc9801_state, init_pc9801_kanji,   "NEC",   "PC-9801F",  MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND ) // genuine dump
 
 // N5200 (started as a vanilla PC-98 business line derivative,
 //        eventually diverged into its own thing and incorporated various Hyper 98 features.
