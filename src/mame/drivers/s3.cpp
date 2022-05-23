@@ -97,7 +97,7 @@ protected:
 	u8 m_t_c = 0;
 	u8 m_strobe = 0;
 	u8 m_row = 0;
-	bool m_data_ok = 0;
+	bool m_data_ok = false;
 	u8 m_lamp_data = 0;
 	u8 m_game = 0;
 	bool m_disco = false;
@@ -227,7 +227,7 @@ static INPUT_PORTS_START( s3 )
 	PORT_START("DIAGS")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Main Diag") PORT_CODE(KEYCODE_0_PAD) PORT_CHANGED_MEMBER(DEVICE_SELF, s3_state, main_nmi, 1)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Advance") PORT_CODE(KEYCODE_1_PAD)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Manual/Auto") PORT_CODE(KEYCODE_6_PAD)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Manual/Auto") PORT_CODE(KEYCODE_2_PAD)
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYPAD) PORT_NAME("Enter") PORT_CODE(KEYCODE_ENTER_PAD)
 
 	PORT_START("DS1")
@@ -717,10 +717,10 @@ ROM_END
 
 } // Anonymous namespace
 
-GAME( 1977, httip_l1, 0, s3,  httip, s3_state,  empty_init, ROT0, "Williams", "Hot Tip (L-1)",          MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1977, lucky_l1, 0, s3,  lucky, s3_state,  init_4,     ROT0, "Williams", "Lucky Seven (L-1)",      MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1978, wldcp_l1, 0, s3a, wldcp, s3a_state, init_1,     ROT0, "Williams", "World Cup (L-1)",        MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1978, disco_l1, 0, s3a, disco, s3a_state, init_3,     ROT0, "Williams", "Disco Fever (L-1)",      MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1978, cntct_l1, 0, s3a, cntct, s3a_state, init_2,     ROT0, "Williams", "Contact (L-1)",          MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1978, phnix_l1, 0, s3a, phnix, s3a_state, init_2,     ROT0, "Williams", "Phoenix (L-1)",          MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1978, pkrno_l1, 0, s3a, pkrno, s3a_state, empty_init, ROT0, "Williams", "Pokerino (L-1)",         MACHINE_IS_SKELETON_MECHANICAL )
+GAME( 1977, httip_l1, 0, s3,  httip, s3_state,  empty_init, ROT0, "Williams", "Hot Tip (L-1)",          MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1977, lucky_l1, 0, s3,  lucky, s3_state,  init_4,     ROT0, "Williams", "Lucky Seven (L-1)",      MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1978, wldcp_l1, 0, s3a, wldcp, s3a_state, init_1,     ROT0, "Williams", "World Cup (L-1)",        MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1978, disco_l1, 0, s3a, disco, s3a_state, init_3,     ROT0, "Williams", "Disco Fever (L-1)",      MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1978, cntct_l1, 0, s3a, cntct, s3a_state, init_2,     ROT0, "Williams", "Contact (L-1)",          MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1978, phnix_l1, 0, s3a, phnix, s3a_state, init_2,     ROT0, "Williams", "Phoenix (L-1)",          MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1978, pkrno_l1, 0, s3a, pkrno, s3a_state, empty_init, ROT0, "Williams", "Pokerino (L-1)",         MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )

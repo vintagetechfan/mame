@@ -89,9 +89,9 @@ private:
 	u8 switch_r();
 	u8 m_strobe = 0;
 	u8 m_row = 0;
-	bool m_data_ok = 0;
+	bool m_data_ok = false;
 	u8 m_lamp_data = 0;
-	bool m_irq_in_progress = 0;
+	bool m_irq_in_progress = false;
 	DECLARE_WRITE_LINE_MEMBER(pia22_ca2_w) { m_io_outputs[20] = state; } //ST5
 	DECLARE_WRITE_LINE_MEMBER(pia22_cb2_w) { } //ST-solenoids enable
 	DECLARE_WRITE_LINE_MEMBER(pia24_ca2_w) { m_io_outputs[17] = state; } //ST2
@@ -197,7 +197,7 @@ static INPUT_PORTS_START( s4 )
 	PORT_START("DIAGS")
 	PORT_BIT( 0x02, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Main Diag") PORT_CODE(KEYCODE_0_PAD) PORT_CHANGED_MEMBER(DEVICE_SELF, s4_state, main_nmi, 1)
 	PORT_BIT( 0x04, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Advance") PORT_CODE(KEYCODE_1_PAD)
-	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Manual/Auto") PORT_CODE(KEYCODE_6_PAD)
+	PORT_BIT( 0x08, IP_ACTIVE_LOW, IPT_KEYPAD) PORT_NAME("Manual/Auto") PORT_CODE(KEYCODE_2_PAD)
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_KEYPAD) PORT_NAME("Enter") PORT_CODE(KEYCODE_ENTER_PAD)
 
 	PORT_START("DS1")
@@ -595,12 +595,12 @@ ROM_END
 } // Anonymous namespace
 
 // Pinball
-GAME( 1979, flash_l2, 0,        s4, flash, s4_state, empty_init, ROT0, "Williams", "Flash (Williams, L-2)",           MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1979, flash_l1, flash_l2, s4, flash, s4_state, empty_init, ROT0, "Williams", "Flash (Williams, L-1)",           MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1979, flash_t1, flash_l2, s4, flash, s4_state, empty_init, ROT0, "Williams", "Flash (Williams, T-1) Ted Estes", MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1978, trizn_l1, 0,        s4, trizn, s4_state, empty_init, ROT0, "Williams", "Tri Zone (L-1)",                  MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1978, trizn_t1, trizn_l1, s4, trizn, s4_state, empty_init, ROT0, "Williams", "Tri Zone (T-1)",                  MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1979, tmwrp_l3, 0,        s4, tmwrp, s4_state, empty_init, ROT0, "Williams", "Time Warp (Williams, L-3)",       MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1979, tmwrp_l2, tmwrp_l3, s4, tmwrp, s4_state, empty_init, ROT0, "Williams", "Time Warp (Williams, L-2)",       MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1979, tmwrp_t2, tmwrp_l3, s4, tmwrp, s4_state, empty_init, ROT0, "Williams", "Time Warp (Williams, T-2)",       MACHINE_IS_SKELETON_MECHANICAL )
-GAME( 1979, stlwr_l2, 0,        s4, stlwr, s4_state, empty_init, ROT0, "Williams", "Stellar Wars (L-2)",              MACHINE_IS_SKELETON_MECHANICAL )
+GAME( 1979, flash_l2, 0,        s4, flash, s4_state, empty_init, ROT0, "Williams", "Flash (Williams, L-2)",           MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, flash_l1, flash_l2, s4, flash, s4_state, empty_init, ROT0, "Williams", "Flash (Williams, L-1)",           MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, flash_t1, flash_l2, s4, flash, s4_state, empty_init, ROT0, "Williams", "Flash (Williams, T-1) Ted Estes", MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1978, trizn_l1, 0,        s4, trizn, s4_state, empty_init, ROT0, "Williams", "Tri Zone (L-1)",                  MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1978, trizn_t1, trizn_l1, s4, trizn, s4_state, empty_init, ROT0, "Williams", "Tri Zone (T-1)",                  MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, tmwrp_l3, 0,        s4, tmwrp, s4_state, empty_init, ROT0, "Williams", "Time Warp (Williams, L-3)",       MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, tmwrp_l2, tmwrp_l3, s4, tmwrp, s4_state, empty_init, ROT0, "Williams", "Time Warp (Williams, L-2)",       MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, tmwrp_t2, tmwrp_l3, s4, tmwrp, s4_state, empty_init, ROT0, "Williams", "Time Warp (Williams, T-2)",       MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )
+GAME( 1979, stlwr_l2, 0,        s4, stlwr, s4_state, empty_init, ROT0, "Williams", "Stellar Wars (L-2)",              MACHINE_IS_SKELETON_MECHANICAL | MACHINE_SUPPORTS_SAVE )

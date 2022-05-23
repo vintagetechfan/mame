@@ -213,7 +213,7 @@ public:
 	virtual void pcb_reset() override;
 
 protected:
-	nes_smb2jb_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, u32 clock);
+	nes_smb2jb_device(const machine_config &mconfig, device_type type, const char *tag, device_t *owner, u32 clock, u8 bank67);
 
 	// device-level overrides
 	virtual void device_start() override;
@@ -225,7 +225,7 @@ protected:
 
 private:
 	void write_45(offs_t offset, u8 data);
-	u8 m_bank67;
+	const u8 m_bank67;
 
 	static const device_timer_id TIMER_IRQ = 0;
 	emu_timer *irq_timer;
@@ -400,6 +400,7 @@ class nes_whirlwind_device : public nes_nrom_device
 {
 public:
 	virtual u8 read_m(offs_t offset) override;
+
 	virtual void pcb_reset() override;
 
 protected:
@@ -533,11 +534,11 @@ class nes_lh10_device : public nes_nrom_device
 {
 public:
 	// construction/destruction
-	nes_lh10_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+	nes_lh10_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock);
 
-	virtual uint8_t read_h(offs_t offset) override;
-	virtual uint8_t read_m(offs_t offset) override;
-	virtual void write_h(offs_t offset, uint8_t data) override;
+	virtual u8 read_h(offs_t offset) override;
+	virtual u8 read_m(offs_t offset) override;
+	virtual void write_h(offs_t offset, u8 data) override;
 
 	virtual void pcb_reset() override;
 
@@ -546,9 +547,7 @@ protected:
 	virtual void device_start() override;
 
 private:
-	void update_prg();
-	uint8_t m_latch;
-	uint8_t m_reg[8];
+	u8 m_latch;
 };
 
 
@@ -654,12 +653,6 @@ public:
 
 	virtual uint8_t read_m(offs_t offset) override;
 	virtual void write_m(offs_t offset, uint8_t data) override;
-
-	virtual void pcb_reset() override;
-
-protected:
-	// device-level overrides
-	virtual void device_start() override;
 };
 
 
@@ -674,10 +667,6 @@ public:
 	virtual uint8_t read_h(offs_t offset) override;
 
 	virtual void pcb_reset() override;
-
-protected:
-	// device-level overrides
-	virtual void device_start() override;
 };
 
 

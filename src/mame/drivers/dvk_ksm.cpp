@@ -84,7 +84,7 @@ static constexpr int KSM_STATUSLINE_VRAM = 0xF8B0;
 #define LOG_DEBUG     (1U <<  2)
 
 //#define VERBOSE (LOG_DEBUG)
-//#define LOG_OUTPUT_FUNC printf
+//#define LOG_OUTPUT_FUNC osd_printf_info
 #include "logmacro.h"
 
 #define LOGKBD(...) LOGMASKED(LOG_KEYBOARD, __VA_ARGS__)
@@ -136,8 +136,8 @@ private:
 
 	struct
 	{
-		uint8_t line;
-		uint16_t ptr;
+		uint8_t line = 0;
+		uint16_t ptr = 0;
 	} m_video;
 
 	enum
@@ -145,8 +145,8 @@ private:
 		TIMER_ID_BRG = 0
 	};
 
-	bool brg_state;
-	int brga, brgb, brgc;
+	bool brg_state = false;
+	int brga = 0, brgb = 0, brgc = 0;
 	emu_timer *m_brg = nullptr;
 
 	void update_brg(bool a, bool b, int c);

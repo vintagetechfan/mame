@@ -1262,13 +1262,14 @@ a certain item) -->
 	</software>
 
 <!-- This prototype doesn't work on real hardware, nor in MAME, due to a timing issue in its initialization code. It can be made to work by changing the instruction at $02E41 (EI) to 0x00 (NOP). -->
-	<software name="brkthru" supported="no">
+	<software name="brkthru">
 		<description>BreakThru! (prototype)</description>
 		<year>1994</year>
 		<publisher>Spectrum Holobyte</publisher>
 		<part name="cart" interface="gamegear_cart">
 			<dataarea name="rom" size="131072">
 				<rom name="breakthru [proto].bin" size="131072" crc="64d7a694" sha1="571bd543320bc67c4103630c804705955bc5250a"/>
+				<rom size="1" offset="0x02e41" value="0x00" loadflag="fill"/>
 			</dataarea>
 		</part>
 	</software>
@@ -6449,6 +6450,18 @@ a certain item) -->
 		<part name="cart" interface="gamegear_cart">
 			<dataarea name="rom" size="131072">
 				<rom name="poker faced paul's blackjack (usa).bin" size="131072" crc="89d34067" sha1="010560dee1eafae3266eb9720e2f802c0deccf40"/>
+			</dataarea>
+		</part>
+	</software>
+
+<!-- This was compiled from source released by one of the authors -->
+	<software name="pokerfc">
+		<description>Poker Face Paul's Cribbage (prototype)</description>
+		<year>1994</year>
+		<publisher>Spidersoft</publisher>
+		<part name="cart" interface="gamegear_cart">
+			<dataarea name="rom" size="131072">
+				<rom name="poker faced paul's cribbage [proto].bin" size="131072" crc="d2e644b4" sha1="232906b3198763dd8d500bf445edbc54e0e3c67e"/>
 			</dataarea>
 		</part>
 	</software>

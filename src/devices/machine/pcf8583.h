@@ -97,8 +97,8 @@ protected:
 
 	// device_nvram_interface overrides
 	virtual void nvram_default() override;
-	virtual void nvram_read(emu_file &file) override;
-	virtual void nvram_write(emu_file &file) override;
+	virtual bool nvram_read(util::read_stream &file) override;
+	virtual bool nvram_write(util::write_stream &file) override;
 
 private:
 	static constexpr uint8_t PCF8583_SLAVE_ADDRESS = 0xa0;
@@ -166,7 +166,7 @@ private:
 	bool m_irq;
 	emu_timer * m_timer;
 
-	enum { STATE_IDLE, STATE_DEVSEL, STATE_REGISTER, STATE_DATAIN, STATE_DATAOUT };
+	enum { STATE_IDLE, STATE_DEVSEL, STATE_REGISTER, STATE_DATAIN, STATE_DATAOUT, STATE_READSELACK };
 };
 
 // device type definition
