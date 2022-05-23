@@ -2401,6 +2401,23 @@ void pc9801us_state::pc9801us(machine_config &config)
 	config_floppy_35hd(config);
 }
 
+void pc9801vm_state::pc9801fs(machine_config &config)
+{
+	pc9801rs(config);
+	const XTAL xtal = XTAL(20'000'000); // ~20 MHz
+	I386SX(config.replace(), m_maincpu, xtal);
+	m_maincpu->set_addrmap(AS_PROGRAM, &pc9801vm_state::pc9801rs_map);
+	m_maincpu->set_addrmap(AS_IO, &pc9801vm_state::pc9801rs_io);
+	m_maincpu->set_irq_acknowledge_callback("pic8259_master", FUNC(pic8259_device::inta_cb));
+
+	// optional 3'5 floppies x2
+	config_floppy_525hd(config);
+	
+	// optional SCSI HDD
+	
+	pit_clock_config(config, xtal / 4);
+}
+
 void pc9801bx_state::pc9801bx2(machine_config &config)
 {
 	pc9801rs(config);
@@ -2446,7 +2463,7 @@ void pc9801bx_state::pc9801bx2(machine_config &config)
 	ROM_REGION( 0x80000, "new_chargen", ROMREGION_ERASEFF )
 
 /*
-"vanilla" - 8086 5
+"vanilla" - μPD8086, 5 MHz?
 */
 
 ROM_START( pc9801 )
@@ -2669,6 +2686,28 @@ ROM_START( pc9801us )
 //  LOAD_IDE_ROM
 ROM_END
 
+
+/*
+FS - 80386 20
+*/
+
+ROM_START( pc9801fs )
+	ROM_REGION16_LE( 0x40000, "biosrom", ROMREGION_ERASEFF )
+	ROM_LOAD16_BYTE( "kqx01_00.bin",  0x000000, 0x020000, CRC(4713d388) SHA1(9ae48fbe7b8ab7144e045e183ed88d2544d9a61c) )
+	ROM_LOAD16_BYTE( "kqx02_00.bin",  0x000001, 0x020000, CRC(f55e42d6) SHA1(2ab0ae817e9abed984544c920182689127550ce3) )
+
+	ROM_REGION16_LE( 0x30000, "ipl", ROMREGION_ERASEFF )
+	ROM_COPY( "biosrom", 0x20000, 0x10000, 0x08000 )  //ITF ROM
+	ROM_COPY( "biosrom", 0x28000, 0x18000, 0x08000 )  //BIOS ROM
+	ROM_COPY( "biosrom", 0x30000, 0x20000, 0x08000 )
+	ROM_COPY( "biosrom", 0x38000, 0x28000, 0x08000 )
+
+	ROM_REGION( 0x80000, "chargen", 0 )
+	ROM_LOAD( "font_ux.rom",     0x000000, 0x046800, BAD_DUMP CRC(19a76eeb) SHA1(96a006e8515157a624599c2b53a581ae0dd560fd) )
+
+	LOAD_KANJI_ROMS
+//  LOAD_IDE_ROM
+ROM_END
 
 /*
 RX - 80286 12 (no V30?)
@@ -2941,6 +2980,8 @@ COMP( 1990, pc9801dx,   0,        0, pc9801dx,  pc9801rs, pc9801vm_state, init_p
 // ...
 // UF/UR/US class (i386SX + SDIP, optional high-reso according to BIOS? Derivatives of UX)
 COMP( 1992, pc9801us,   0,        0, pc9801us,  pc9801rs, pc9801us_state, init_pc9801_kanji,   "NEC",   "PC-9801US",                     MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
+// FS class (i386SX + ?)
+COMP( 1992, pc9801fs,   0,        0, pc9801fs,  pc9801rs, pc9801vm_state, init_pc9801_kanji,   "NEC",   "PC-9801FS",                     MACHINE_NOT_WORKING | MACHINE_IMPERFECT_SOUND )
 // FA class (i486SX)
 // ...
 // BX class (official nickname "98 FELLOW", last releases prior to 9821 line)

@@ -379,6 +379,7 @@ public:
 	void pc9801dx(machine_config &config);
 	void pc9801vx(machine_config &config);
 	void pc9801rs(machine_config &config);
+	void pc9801fs(machine_config &config);
 
 	void init_pc9801vm_kanji();
 
