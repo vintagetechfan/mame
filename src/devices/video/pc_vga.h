@@ -111,6 +111,8 @@ protected:
 		return res;
 	}
 
+    u8 m_test_fallback[256]{};
+
 
 	struct vga_t
 	{

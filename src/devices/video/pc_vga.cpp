@@ -1322,7 +1322,8 @@ uint8_t vga_device::crtc_reg_read(uint8_t index)
 			res = vga.crtc.line_compare & 0xff;
 			break;
 		default:
-			printf("Unhandled CRTC reg r %02x\n",index);
+			logerror("Unhandled CRTC reg r %02x\n", index);
+			res = m_test_fallback[index];
 			break;
 	}
 	return res;
@@ -1360,6 +1361,7 @@ void vga_device::recompute_params()
 	else
 		recompute_params_clock(1, ((vga.miscellaneous_output & 0xc) ? XTAL(28'636'363) : XTAL(25'174'800)).value());
 }
+
 
 void vga_device::crtc_reg_write(uint8_t index, uint8_t data)
 {
@@ -1508,6 +1510,7 @@ void vga_device::crtc_reg_write(uint8_t index, uint8_t data)
 			break;
 		default:
 			logerror("Unhandled CRTC reg w %02x %02x\n",index,data);
+			m_test_fallback[index] = data;
 			break;
 	}
 }

@@ -368,6 +368,7 @@ Sega 2005
 #include "sound/pci-ac97.h"
 #include "sound/sb0400.h"
 #include "video/gf7600gs.h"
+#include "video/pc_vga.h"
 
 class lindbergh_state : public driver_device
 {
@@ -379,9 +380,12 @@ public:
 protected:
 	virtual void machine_start() override;
 	virtual void machine_reset() override;
+	
+	required_device<vga_device> m_vga;
 };
 
 lindbergh_state::lindbergh_state(const machine_config &mconfig, device_type type, const char *tag) : driver_device(mconfig, type, tag)
+	, m_vga(*this, "vga")
 {
 }
 
@@ -397,10 +401,18 @@ void lindbergh_state::lindbergh(machine_config &config)
 {
 	PENTIUM4(config, "maincpu", 28000000U*5); /* Actually Celeron D at 2,8 GHz */
 
+	screen_device &screen(SCREEN(config, "screen", SCREEN_TYPE_RASTER));
+	screen.set_raw(XTAL(25'174'800), 900, 0, 640, 526, 0, 480);
+	screen.set_screen_update(m_vga, FUNC(vga_device::screen_update));
+
+	VGA(config, m_vga, 0);
+	m_vga->set_screen("screen");
+	m_vga->set_vram_size(64*1024*1024);
+
 	PCI_ROOT                (config, "pci",           0);
 	I82875P_HOST            (config, "pci:00.0",      0,                   0x103382c0, "maincpu", 512*1024*1024);
 	I82875P_AGP             (config, "pci:01.0",      0);
-	GEFORCE_7600GS          (config, "pci:01.0:00.0", 0,                   0x10de02e1);
+	GEFORCE_7600GS          (config, "pci:01.0:00.0", 0,                   0x10de02e1, m_vga);
 	I82875P_OVERFLOW        (config, "pci:06.0",      0,                   0x103382c0);
 	PCI_BRIDGE              (config, "pci:1c.0",      0, 0x808625ae, 0x02);
 	I82541                  (config, "pci:1c.0:00.0", 0,                   0x103382c0);
