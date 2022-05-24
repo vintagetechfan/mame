@@ -56,7 +56,9 @@ private:
 
 	void pc9821_egc_w(offs_t offset, u16 data, u16 mem_mask = ~0);
 
-	UPD7220_DISPLAY_PIXELS_MEMBER( pegc_display_pixels );
+	virtual uint32_t screen_update(screen_device &screen, bitmap_rgb32 &bitmap, const rectangle &cliprect) override;
+
+//	UPD7220_DISPLAY_PIXELS_MEMBER( pegc_display_pixels );
 };
 
 // MATE A
